@@ -3,10 +3,17 @@
     "description": "Microservice to interact with Silverpop.",
     "keywords": ["silverpop"],
     "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:Orthodox-Union/SilverpopPHP.git"
+        }
+    ],
     "require": {
         "php": ">=5.6.4",
         "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "Orthodox-Union/SilverpopPHP": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

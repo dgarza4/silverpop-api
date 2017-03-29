@@ -4,8 +4,55 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "74dc835a15bb85b1126b5e9d641b2f18",
+    "content-hash": "13ff62313a0e7b266e924e5cd60fa380",
     "packages": [
+        {
+            "name": "Orthodox-Union/SilverpopPHP",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Orthodox-Union/SilverpopPHP.git",
+                "reference": "dff3b06febb5aa5b5490f2b6317d16792ba0029b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Orthodox-Union/SilverpopPHP/zipball/dff3b06febb5aa5b5490f2b6317d16792ba0029b",
+                "reference": "dff3b06febb5aa5b5490f2b6317d16792ba0029b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Silverpop": "src/"
+                }
+            },
+            "license": [
+                "GPL"
+            ],
+            "authors": [
+                {
+                    "name": "David Haywood Smith",
+                    "email": "davehs@gmail.com",
+                    "homepage": "https://github.com/DHS/"
+                }
+            ],
+            "description": "Silverpop API in php",
+            "homepage": "https://github.com/Orthodox-Union/SilverpopPHP",
+            "keywords": [
+                "API",
+                "Silverpop",
+                "XML-API",
+                "email"
+            ],
+            "support": {
+                "source": "https://github.com/Orthodox-Union/SilverpopPHP/tree/master"
+            },
+            "time": "2017-03-29T21:42:10+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",
@@ -3338,7 +3385,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "orthodox-union/silverpopphp": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
