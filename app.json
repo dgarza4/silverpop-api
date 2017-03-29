@@ -5,7 +5,6 @@
   "repository": "https://github.com/Orthodox-Union/silverpop-api",
   "scripts": {
     "dokku": {
-      "postdeploy": "php artisan migrate --force"
     }
   },
   "env": {
