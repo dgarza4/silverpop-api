@@ -1,0 +1,19 @@
+{
+  "name": "silverpop-api",
+  "description": "Microservice to interact with Silverpop.",
+  "website": "https://silverpop-api.dokku03.aws.oustatic.com",
+  "repository": "https://github.com/Orthodox-Union/silverpop-api",
+  "scripts": {
+    "dokku": {
+      "postdeploy": "php artisan migrate --force"
+    }
+  },
+  "env": {
+  },
+  "image": "gliderlabs/herokuish",
+  "addons": [
+    "dokku-redis"
+  ],
+  "buildpacks": [
+  ]
+}
