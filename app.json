@@ -14,5 +14,11 @@
     "dokku-redis"
   ],
   "buildpacks": [
+      {
+          "url": "https://github.com/heroku/heroku-buildpack-nodejs.git"
+      },
+      {
+          "url": "https://github.com/heroku/heroku-buildpack-php.git"
+      }
   ]
 }
