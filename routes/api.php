@@ -40,3 +40,26 @@ Route::get('/list/{id}/count', function ($id) {
         throw $e;
     };
 });
+
+Route::get('/list/{id}/export', function ($id) {
+    try {
+        $silverpop = new EngagePod([
+            'username' => env('SILVERPOP_API_USERNAME'),
+            'password' => env('SILVERPOP_API_PASSWORD'),
+            'engage_server' => env('SILVERPOP_API_POD')
+        ]);
+
+        $exportList = $silverpop->exportList($id);
+
+        $response = [
+            'results' => [
+                'export' => $exportList
+            ]
+        ];
+
+        return $response;
+
+    } catch (Exception $e) {
+        throw $e;
+    };
+});
