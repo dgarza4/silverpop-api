@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Orthodox-Union/SilverpopPHP.git",
-                "reference": "dff3b06febb5aa5b5490f2b6317d16792ba0029b"
+                "reference": "90e504023e6c5bbeb66d1532082fb3c7c0586cfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Orthodox-Union/SilverpopPHP/zipball/dff3b06febb5aa5b5490f2b6317d16792ba0029b",
-                "reference": "dff3b06febb5aa5b5490f2b6317d16792ba0029b",
+                "url": "https://api.github.com/repos/Orthodox-Union/SilverpopPHP/zipball/90e504023e6c5bbeb66d1532082fb3c7c0586cfd",
+                "reference": "90e504023e6c5bbeb66d1532082fb3c7c0586cfd",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
             "support": {
                 "source": "https://github.com/Orthodox-Union/SilverpopPHP/tree/master"
             },
-            "time": "2017-03-29T21:42:10+00:00"
+            "time": "2017-03-30T00:11:48+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
