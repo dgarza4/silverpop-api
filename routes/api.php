@@ -19,6 +19,27 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/list', function ($type = 2) {
+    try {
+        $silverpop = new EngagePod([
+            'username' => env('SILVERPOP_API_USERNAME'),
+            'password' => env('SILVERPOP_API_PASSWORD'),
+            'engage_server' => env('SILVERPOP_API_POD')
+        ]);
+
+        $lists = $silverpop->getLists($type, false);
+
+        $response = [
+            'results' => $lists
+        ];
+
+        return $response;
+
+    } catch (Exception $e) {
+        throw $e;
+    };
+});
+
 Route::get('/list/{id}/count', function ($id) {
     try {
         $silverpop = new EngagePod([
