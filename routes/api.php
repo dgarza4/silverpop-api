@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Silverpop\EngagePod;
 
 /*
@@ -51,6 +52,10 @@ Route::get('/list/{id}/export', function ($id) {
 
         $exportList = $silverpop->exportList($id);
 
+        $hash = sha1($exportList['JOB_ID']);
+
+        Cache::put($hash, $exportList, 60 * 24);
+
         $response = [
             'results' => [
                 'export' => $exportList
@@ -65,6 +70,8 @@ Route::get('/list/{id}/export', function ($id) {
 });
 
 Route::get('/job/{id}', function ($id) {
+    $hash = sha1($id);
+
     try {
         $silverpop = new EngagePod([
             'username' => env('SILVERPOP_API_USERNAME'),
@@ -88,28 +95,46 @@ Route::get('/job/{id}', function ($id) {
 });
 
 Route::get('/job/{id}/download', function ($id) {
-    $localFile = '/tmp/' . sha1($id);
-    $serverFile = '/download/TJJ IL NEW - All - Mar 30 2017 12-29-00 AM.CSV';
+    $hash = sha1($id);
+
+    if (!Cache::has($hash)) {
+        throw new Exception('Job ID not found.');
+    }
+
+    $job = Cache::get($hash);
+
+    $localFile = tmpfile();
+    $serverFile = $job['FILE_PATH'];
 
     try {
-        $conn_id = ftp_connect('transfer' . env('SILVERPOP_API_POD') . '.silverpop.com');
-        $login_result = ftp_login($conn_id, env('SILVERPOP_API_USERNAME'), env('SILVERPOP_API_PASSWORD'));
+        if (!Storage::exists($hash)) {
+            $conn_id = ftp_connect('transfer' . env('SILVERPOP_API_POD') . '.silverpop.com');
+            $login_result = ftp_login($conn_id, env('SILVERPOP_API_USERNAME'), env('SILVERPOP_API_PASSWORD'));
 
-        if (ftp_get($conn_id, $localFile, $serverFile, FTP_BINARY)) {
-            echo "Successfully written to $localFile\n";
-        } else {
-            echo "There was a problem\n";
+            if (!ftp_fget($conn_id, $localFile, $serverFile, FTP_BINARY)) {
+                throw new Exception('There was a problem downloading the file.');
+            }
+
+            ftp_close($conn_id);
+
+            Storage::put($hash, $localFile);
+
+            fclose($localFile);
         }
 
-        ftp_close($conn_id);
-
-        $response = [
-            'results' => [
-                'file' => $localFile
-            ]
+        $headers = [
+            'Content-Type' => 'text/csv',
         ];
 
-        return $response;
+        $fs = Storage::getDriver();
+        $stream = $fs->readStream($hash);
+
+        return Response::stream(function () use ($hash, $stream) {
+            fpassthru($stream);
+        }, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-disposition' => 'attachment; filename="' . $hash . '"',
+        ]);
     } catch (Exception $e) {
         throw $e;
     };
