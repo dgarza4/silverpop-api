@@ -19,6 +19,33 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/contact/{database_id}/{email}', function ($databaseId, $email) {
+    try {
+        $silverpop = new EngagePod([
+            'username' => env('SILVERPOP_API_USERNAME'),
+            'password' => env('SILVERPOP_API_PASSWORD'),
+            'engage_server' => env('SILVERPOP_API_POD')
+        ]);
+
+        $contactDetails = $silverpop->getContact($databaseId, $email, null, null, true);
+
+        if (empty($contactDetails['CONTACT_LISTS'])) {
+            $contactDetails['CONTACT_LISTS']['CONTACT_LIST_ID'] = [];
+        }
+
+        $response = [
+            'results' => [
+                'contactListId' => $contactDetails['CONTACT_LISTS']['CONTACT_LIST_ID']
+            ]
+        ];
+
+        return $response;
+
+    } catch (Exception $e) {
+        throw $e;
+    };
+});
+
 Route::get('/list', function ($type = 2) {
     try {
         $silverpop = new EngagePod([
