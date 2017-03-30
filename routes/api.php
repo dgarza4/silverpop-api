@@ -86,3 +86,31 @@ Route::get('/job/{id}', function ($id) {
         throw $e;
     };
 });
+
+Route::get('/job/{id}/download', function ($id) {
+    $localFile = '/tmp/' . sha1($id);
+    $serverFile = '/download/TJJ IL NEW - All - Mar 30 2017 12-29-00 AM.CSV';
+
+    try {
+        $conn_id = ftp_connect('transfer' . env('SILVERPOP_API_POD') . '.silverpop.com');
+        $login_result = ftp_login($conn_id, env('SILVERPOP_API_USERNAME'), env('SILVERPOP_API_PASSWORD'));
+
+        if (ftp_get($conn_id, $localFile, $serverFile, FTP_BINARY)) {
+            echo "Successfully written to $localFile\n";
+        } else {
+            echo "There was a problem\n";
+        }
+
+        ftp_close($conn_id);
+
+        $response = [
+            'results' => [
+                'file' => $localFile
+            ]
+        ];
+
+        return $response;
+    } catch (Exception $e) {
+        throw $e;
+    };
+});
