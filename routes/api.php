@@ -63,3 +63,26 @@ Route::get('/list/{id}/export', function ($id) {
         throw $e;
     };
 });
+
+Route::get('/job/{id}', function ($id) {
+    try {
+        $silverpop = new EngagePod([
+            'username' => env('SILVERPOP_API_USERNAME'),
+            'password' => env('SILVERPOP_API_PASSWORD'),
+            'engage_server' => env('SILVERPOP_API_POD')
+        ]);
+
+        $result = $silverpop->getJobStatus($id);
+
+        $response = [
+            'results' => [
+                'job_status' => $result
+            ]
+        ];
+
+        return $response;
+
+    } catch (Exception $e) {
+        throw $e;
+    };
+});
