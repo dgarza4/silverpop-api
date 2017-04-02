@@ -46,25 +46,18 @@ Route::get('/contact/{database_id}/{email}', function ($databaseId, $email) {
     };
 });
 
-Route::get('/list', function ($type = 2) {
+Route::get('/list', function (EngagePod $silverpop, $type = 2) {
     try {
-        $silverpop = new EngagePod([
-            'username' => env('SILVERPOP_API_USERNAME'),
-            'password' => env('SILVERPOP_API_PASSWORD'),
-            'engage_server' => env('SILVERPOP_API_POD')
-        ]);
-
         $lists = $silverpop->getLists($type, false);
-
-        $response = [
-            'results' => $lists
-        ];
-
-        return $response;
-
     } catch (Exception $e) {
         throw $e;
     };
+
+    $response = [
+        'results' => $lists
+    ];
+
+    return $response;
 });
 
 Route::get('/list/{id}/count', function ($id) {

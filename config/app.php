@@ -177,6 +177,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Cutsom Application Service Providers...
+         */
+        App\Providers\SilverpopServiceProvider::class,
     ],
 
     /*

@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'silverpop' => [
+        'username' => env('SILVERPOP_API_USERNAME'),
+        'password' => env('SILVERPOP_API_PASSWORD'),
+        'engage_server' => env('SILVERPOP_API_POD'),
+    ],
+
 ];
