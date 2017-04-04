@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "13ff62313a0e7b266e924e5cd60fa380",
+    "content-hash": "f143339edf9cc7125806eb4bc7a84b86",
     "packages": [
         {
             "name": "Orthodox-Union/SilverpopPHP",
@@ -629,6 +629,47 @@
                 "psr-3"
             ],
             "time": "2017-03-13T07:08:03+00:00"
+        },
+        {
+            "name": "mrmarkfrench/silverpop-php-connector",
+            "version": "1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mrmarkfrench/silverpop-php-connector.git",
+                "reference": "7c8ace4c4a785f9961d4ccfa2308acf8450e1387"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mrmarkfrench/silverpop-php-connector/zipball/7c8ace4c4a785f9961d4ccfa2308acf8450e1387",
+                "reference": "7c8ace4c4a785f9961d4ccfa2308acf8450e1387",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-xml": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark French"
+                }
+            ],
+            "description": "A connector SDK library for applications integrating with Silverpop, including the Silverpop Universal Behavior API",
+            "homepage": "https://github.com/mrmarkfrench/silverpop-php-connector",
+            "keywords": [
+                "Silverpop"
+            ],
+            "time": "2015-08-11T20:48:15+00:00"
         },
         {
             "name": "mtdowling/cron-expression",
