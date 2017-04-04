@@ -4,10 +4,17 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use Silverpop\EngagePod;
+use SilverpopConnector\SilverpopConnector;
 
 class SilverpopServiceProvider extends ServiceProvider
 {
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
+
     /**
      * Bootstrap the application services.
      *
@@ -24,12 +31,20 @@ class SilverpopServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(EngagePod::class, function ($app) {
-            return new EngagePod([
-                'username' => config('services.silverpop.username'),
-                'password' => config('services.silverpop.password'),
-                'engage_server' => config('services.silverpop.engage_server'),
-            ]);
+        $this->app->singleton(SilverpopConnector::class, function ($app) {
+            $baseUrl = 'https://api' . config('services.silverpop.engage_server') . '.silverpop.com';
+
+            return SilverpopConnector::getInstance($baseUrl);
         });
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [SilverpopConnector::class];
     }
 }
