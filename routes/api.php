@@ -49,7 +49,7 @@ Route::get('/contact/{database_id}/{email}', function (SilverpopConnector $silve
     return $response;
 });
 
-Route::get('/list', function (SilverpopConnector $silverpop) {
+Route::get('/list/{id?}', function (SilverpopConnector $silverpop, $id = null) {
     $hash = sha1('api/list');
 
     if (Cache::has($hash)) {
@@ -76,7 +76,7 @@ Route::get('/list', function (SilverpopConnector $silverpop) {
     }
 
     $response = [
-        'results' => $lists
+        'results' => $id ? $lists[$id] : $lists
     ];
 
     return $response;
