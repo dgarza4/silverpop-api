@@ -79,17 +79,17 @@ Route::get('/list/{id}/count', function (SilverpopService $silverpop, $id) {
 Route::get('/list/{id}/export', function (SilverpopService $silverpop, $id) {
     try {
         $exportList = $silverpop->exportList($id);
-
-        $response = [
-            'results' => [
-                'export' => $exportList
-            ]
-        ];
-
-        return $response;
     } catch (Exception $e) {
         throw $e;
     };
+
+    $response = [
+        'results' => [
+            'export' => $exportList
+        ]
+    ];
+
+    return $response;
 });
 
 Route::get('/job/{id}', function (SilverpopConnector $silverpop, $id) {
