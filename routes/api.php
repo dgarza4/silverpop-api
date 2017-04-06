@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+use App\Services\SilverpopService;
 use SilverpopConnector\SilverpopConnector;
 
 /*
@@ -20,13 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/contact/{database_id}/{email}', function (SilverpopConnector $silverpop, $databaseId, $email) {
+Route::get('/contact/{database_id}/{email}', function (SilverpopService $silverpop, $databaseId, $email) {
     try {
-        $silverpop->authenticateXml(
-            config('services.silverpop.username'),
-            config('services.silverpop.password')
-        );
-
         $fields = [
             'RETURN_CONTACT_LISTS' => true,
             'EMAIL' => $email
@@ -36,47 +32,33 @@ Route::get('/contact/{database_id}/{email}', function (SilverpopConnector $silve
         if (empty($result['CONTACT_LISTS'])) {
             $result['CONTACT_LISTS']['CONTACT_LIST_ID'] = [];
         }
+
+        $contactLists = [];
+        foreach ($result['CONTACT_LISTS']['CONTACT_LIST_ID'] as $contactListId) {
+            $contactLists[$contactListId] = $silverpop->getLists($contactListId);
+        }
     } catch (Exception $e) {
         throw $e;
     };
 
     $response = [
         'results' => [
-            'contactListId' => $result['CONTACT_LISTS']['CONTACT_LIST_ID']
+            'contactLists' => $contactLists
         ]
     ];
 
     return $response;
 });
 
-Route::get('/list/{id?}', function (SilverpopConnector $silverpop, $id = null) {
-    $hash = sha1('api/list');
-
-    if (Cache::has($hash)) {
-        $lists = Cache::get($hash);
-    } else {
-        try {
-            $silverpop->authenticateXml(
-                config('services.silverpop.username'),
-                config('services.silverpop.password')
-            );
-
-            $result = json_decode(json_encode($silverpop->getLists()), true);
-
-            $lists = [];
-            foreach ($result as $item) {
-                $id = $item['ID'];
-                $lists[$id] = $item;
-            }
-
-            Cache::put($hash, $lists, 15);
-        } catch (Exception $e) {
-            throw $e;
-        };
+Route::get('/list/{id?}', function (SilverpopService $silverpop, $id = null) {
+    try {
+        $lists = $silverpop->getLists($id);
+    } catch (Exception $e) {
+        throw $e;
     }
 
     $response = [
-        'results' => $id ? $lists[$id] : $lists
+        'results' => $lists
     ];
 
     return $response;
