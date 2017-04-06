@@ -17,10 +17,6 @@ use SilverpopConnector\SilverpopConnector;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('/contact/{database_id}/{email}', function (SilverpopService $silverpop, $databaseId, $email) {
     try {
         $fields = [
