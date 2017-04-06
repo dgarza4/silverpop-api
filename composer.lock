@@ -4,55 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f143339edf9cc7125806eb4bc7a84b86",
+    "content-hash": "4be80ce63a6a7f14d078e652cb3c9f7e",
     "packages": [
-        {
-            "name": "Orthodox-Union/SilverpopPHP",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Orthodox-Union/SilverpopPHP.git",
-                "reference": "2370cde5224d055387ef759d599535a0fdfd659a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Orthodox-Union/SilverpopPHP/zipball/2370cde5224d055387ef759d599535a0fdfd659a",
-                "reference": "2370cde5224d055387ef759d599535a0fdfd659a",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Silverpop": "src/"
-                }
-            },
-            "license": [
-                "GPL"
-            ],
-            "authors": [
-                {
-                    "name": "David Haywood Smith",
-                    "email": "davehs@gmail.com",
-                    "homepage": "https://github.com/DHS/"
-                }
-            ],
-            "description": "Silverpop API in php",
-            "homepage": "https://github.com/Orthodox-Union/SilverpopPHP",
-            "keywords": [
-                "API",
-                "Silverpop",
-                "XML-API",
-                "email"
-            ],
-            "support": {
-                "source": "https://github.com/Orthodox-Union/SilverpopPHP/tree/master"
-            },
-            "time": "2017-03-30T00:59:10+00:00"
-        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",
@@ -632,16 +585,16 @@
         },
         {
             "name": "mrmarkfrench/silverpop-php-connector",
-            "version": "1.2.3",
+            "version": "dev-feature/getLists-custom-fields",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mrmarkfrench/silverpop-php-connector.git",
-                "reference": "7c8ace4c4a785f9961d4ccfa2308acf8450e1387"
+                "url": "https://github.com/ilanco/silverpop-php-connector.git",
+                "reference": "b9da5fa9ec7e2447162be1dfd35bbd8ed1266b8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mrmarkfrench/silverpop-php-connector/zipball/7c8ace4c4a785f9961d4ccfa2308acf8450e1387",
-                "reference": "7c8ace4c4a785f9961d4ccfa2308acf8450e1387",
+                "url": "https://api.github.com/repos/ilanco/silverpop-php-connector/zipball/b9da5fa9ec7e2447162be1dfd35bbd8ed1266b8a",
+                "reference": "b9da5fa9ec7e2447162be1dfd35bbd8ed1266b8a",
                 "shasum": ""
             },
             "require": {
@@ -655,7 +608,6 @@
                     "": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -669,7 +621,10 @@
             "keywords": [
                 "Silverpop"
             ],
-            "time": "2015-08-11T20:48:15+00:00"
+            "support": {
+                "source": "https://github.com/ilanco/silverpop-php-connector/tree/feature/getLists-custom-fields"
+            },
+            "time": "2017-04-06T00:03:50+00:00"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -3427,7 +3382,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "orthodox-union/silverpopphp": 20
+        "mrmarkfrench/silverpop-php-connector": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
