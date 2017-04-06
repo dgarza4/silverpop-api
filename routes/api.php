@@ -92,28 +92,20 @@ Route::get('/list/{id}/export', function (SilverpopService $silverpop, $id) {
     return $response;
 });
 
-Route::get('/job/{id}', function (SilverpopConnector $silverpop, $id) {
-    $hash = sha1($id);
-
+Route::get('/job/{id}', function (SilverpopService $silverpop, $id) {
     try {
-        $silverpop->authenticateXml(
-            config('services.silverpop.username'),
-            config('services.silverpop.password')
-        );
-
         $result = $silverpop->getJobStatus($id);
-
-        $response = [
-            'results' => [
-                'job_status' => $result
-            ]
-        ];
-
-        return $response;
-
     } catch (Exception $e) {
         throw $e;
     };
+
+    $response = [
+        'results' => [
+            'job_status' => $result
+        ]
+    ];
+
+    return $response;
 });
 
 Route::get('/job/{id}/download', function ($id) {
