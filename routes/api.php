@@ -108,7 +108,7 @@ Route::get('/job/{id}', function (SilverpopService $silverpop, $id) {
     return $response;
 });
 
-Route::get('/job/{id}/download', function ($id) {
+Route::get('/job/{id}/download', function (SilverpopService $silverpop, $id) {
     $hash = sha1($id);
 
     if (!Cache::has($hash)) {
@@ -122,6 +122,13 @@ Route::get('/job/{id}/download', function ($id) {
 
     try {
         if (!Storage::exists($hash)) {
+            // get job status
+            $jobStatus = $silverpop->getJobStatus($id);
+
+            if ($jobStatus !== 'COMPLETE') {
+                throw new Exception('Job status [' . $jobStatus . '] is not complete.');
+            }
+
             $conn_id = ftp_connect('transfer' . config('services.silverpop.engage_server') . '.silverpop.com');
 
             $login_result = ftp_login($conn_id, config('services.silverpop.username'), config('services.silverpop.password'));
