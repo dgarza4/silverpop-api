@@ -60,32 +60,16 @@ Route::get('/list/{id?}', function (SilverpopService $silverpop, $id = null) {
     return $response;
 });
 
-Route::get('/list/{id}/count', function (SilverpopConnector $silverpop, $id) {
-    $listHash = sha1('api/list');
-
-    $lists = [];
-    if (Cache::has($listHash)) {
-        $lists = Cache::get($listHash);
-    }
-
-    if (array_key_exists($id, $lists)) {
-        $listMetaData = $lists[$id];
-    } else {
-        try {
-            $silverpop->authenticateXml(
-                config('services.silverpop.username'),
-                config('services.silverpop.password')
-            );
-
-            $listMetaData = json_decode(json_encode($silverpop->getListMetaData($id)), true);
-        } catch (Exception $e) {
-            throw $e;
-        };
+Route::get('/list/{id}/count', function (SilverpopService $silverpop, $id) {
+    try {
+        $count = $silverpop->getListCount($id);
+    } catch (Exception $e) {
+        throw $e;
     }
 
     $response = [
         'results' => [
-            'count' => $listMetaData['SIZE']
+            'count' => $count
         ]
     ];
 

@@ -75,4 +75,11 @@ class SilverpopService
             return $lists;
         }
     }
+
+    public function getListCount($id)
+    {
+        $list = $this->getLists($id);
+
+        return $list['SIZE'];
+    }
 }
