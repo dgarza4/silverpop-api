@@ -76,18 +76,9 @@ Route::get('/list/{id}/count', function (SilverpopService $silverpop, $id) {
     return $response;
 });
 
-Route::get('/list/{id}/export', function (SilverpopConnector $silverpop, $id) {
+Route::get('/list/{id}/export', function (SilverpopService $silverpop, $id) {
     try {
-        $silverpop->authenticateXml(
-            config('services.silverpop.username'),
-            config('services.silverpop.password')
-        );
-
-        $exportList = json_decode(json_encode($silverpop->exportList($id)), true);
-
-        $hash = sha1($exportList['jobId'][0]);
-
-        Cache::put($hash, $exportList, 60 * 24);
+        $exportList = $silverpop->exportList($id);
 
         $response = [
             'results' => [

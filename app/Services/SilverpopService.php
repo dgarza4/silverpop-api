@@ -82,4 +82,22 @@ class SilverpopService
 
         return $list['SIZE'];
     }
+
+    public function exportList($id)
+    {
+        try {
+            $this->authenticateXml();
+
+            $exportList = json_decode(json_encode($this->silverpop->exportList($id)), true);
+
+            $hash = sha1($exportList['jobId'][0]);
+
+            // cache the result so we can retrieve the file path
+            Cache::put($hash, $exportList, 60 * 24);
+        } catch (Exception $e) {
+            throw $e;
+        };
+
+        return $exportList;
+    }
 }
