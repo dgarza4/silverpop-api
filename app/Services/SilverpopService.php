@@ -100,4 +100,17 @@ class SilverpopService
 
         return $exportList;
     }
+
+    public function addRecipient($listId, $fields, $upsert = false, $autoreply = false, $createdFrom = SilverpopConnector\SilverpopXmlConnector::CREATED_FROM_MANUAL, $lists = [])
+    {
+        try {
+            $this->authenticateXml();
+
+            $contact = json_decode(json_encode($this->silverpop->addRecipient($listId, $fields, $upsert, $autoreply, $createdFrom, $lists)), true);
+        } catch (Exception $e) {
+            throw $e;
+        };
+
+        return $contact[0];
+    }
 }

@@ -45,6 +45,41 @@ Route::get('/contact/{database_id}/{email}', function (SilverpopService $silverp
     return $response;
 });
 
+Route::post('/contact', function (SilverpopService $silverpop, Request $request) {
+    $input = $request->all();
+
+    if (!is_array($input)) {
+        throw new Exception('Illegal input.');
+    }
+
+    if (empty($input)) {
+        throw new Exception('Missing input.');
+    }
+
+    $defaultInput = [
+        'listId' => null,
+        'fields' => [],
+        'upsert' => false,
+        'autoreply' => false,
+        'createdFrom' => SilverpopConnector\SilverpopXmlConnector::CREATED_FROM_MANUAL,
+        'contactLists' => []
+    ];
+
+    $input = array_merge($defaultInput, $input);
+
+    try {
+        $contact = $silverpop->addRecipient($input['listId'], $input['fields'], $input['upsert'], $input['autoreply'], $input['createdFrom'], $input['contactLists']);
+    } catch (Exception $e) {
+        throw $e;
+    }
+
+    $response = [
+        'results' => $contact
+    ];
+
+    return $response;
+});
+
 Route::get('/list/{id?}', function (SilverpopService $silverpop, $id = null) {
     try {
         $lists = $silverpop->getLists($id);
