@@ -200,3 +200,51 @@ Route::get('/job/{id}/download', function (SilverpopService $silverpop, $id) {
         throw $e;
     };
 });
+
+Route::post('/template/{id}/schedule', function (SilverpopService $silverpop, Request $request, $id) {
+    $input = $request->all();
+
+    if (!is_array($input)) {
+        throw new Exception('Illegal input.');
+    }
+
+    if (empty($input)) {
+        throw new Exception('Missing input.');
+    }
+
+    $defaultInput = [
+        'listId' => null,
+        'mailingName' => uniqid('random-'),
+        'scheduledTimestamp' => time() + 60,
+        'optionalElements' => [],
+        'saveToSharedFolder' => 1,
+        'suppressionLists' => []
+    ];
+
+    $input = array_merge($defaultInput, $input);
+
+    try {
+        // scheduleMailing($templateId, $listId, $mailingName, $scheduledTimestamp, $optionalElements = array(), $saveToSharedFolder = 0, $suppressionLists = array())
+        $mailingId = $silverpop->scheduleMailing(
+            $id,
+            $input['listId'],
+            $input['mailingName'],
+            $input['scheduledTimestamp'],
+            $input['optionalElements'],
+            $input['saveToSharedFolder'],
+            $input['suppressionLists']
+        );
+
+        $mailingId = json_decode(json_encode($mailingId), true);
+    } catch (Exception $e) {
+        throw $e;
+    }
+
+    $response = [
+        'results' => [
+            'mailingId' => $mailingId[0]
+        ]
+    ];
+
+    return $response;
+});
