@@ -6,6 +6,8 @@ use Exception;
 
 use Cache;
 
+use Illuminate\Support\Facades\Storage;
+
 use SilverpopConnector\SilverpopConnector;
 
 class SilverpopService
@@ -41,6 +43,10 @@ class SilverpopService
     public function getLists($id = null)
     {
         $hash = sha1('api/list');
+
+        if (Storage::exists('list.json')) {
+            Cache::put($hash, json_decode(Storage::get('list.json')), 15);
+        }
 
         if (Cache::has($hash)) {
             $lists = Cache::get($hash);
