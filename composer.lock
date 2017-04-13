@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4be80ce63a6a7f14d078e652cb3c9f7e",
+    "content-hash": "63868aad764d5192847ac9451903ed98",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -585,16 +585,16 @@
         },
         {
             "name": "mrmarkfrench/silverpop-php-connector",
-            "version": "dev-feature/getLists-custom-fields",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ilanco/silverpop-php-connector.git",
-                "reference": "b9da5fa9ec7e2447162be1dfd35bbd8ed1266b8a"
+                "reference": "d07cd871ed0ea0a154b0d613c704fea2fb014609"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ilanco/silverpop-php-connector/zipball/b9da5fa9ec7e2447162be1dfd35bbd8ed1266b8a",
-                "reference": "b9da5fa9ec7e2447162be1dfd35bbd8ed1266b8a",
+                "url": "https://api.github.com/repos/ilanco/silverpop-php-connector/zipball/d07cd871ed0ea0a154b0d613c704fea2fb014609",
+                "reference": "d07cd871ed0ea0a154b0d613c704fea2fb014609",
                 "shasum": ""
             },
             "require": {
@@ -622,9 +622,9 @@
                 "Silverpop"
             ],
             "support": {
-                "source": "https://github.com/ilanco/silverpop-php-connector/tree/feature/getLists-custom-fields"
+                "source": "https://github.com/ilanco/silverpop-php-connector/tree/master"
             },
-            "time": "2017-04-06T00:03:50+00:00"
+            "time": "2017-04-13T22:57:42+00:00"
         },
         {
             "name": "mtdowling/cron-expression",

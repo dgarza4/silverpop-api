@@ -13,7 +13,7 @@
         "php": ">=5.6.4",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
-        "mrmarkfrench/silverpop-php-connector": "dev-feature/getLists-custom-fields"
+        "mrmarkfrench/silverpop-php-connector": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
