@@ -45,7 +45,7 @@ class SilverpopService
         $hash = sha1('api/list');
 
         if (Storage::exists('list.json')) {
-            Cache::put($hash, json_decode(Storage::get('list.json')), 15);
+            Cache::put($hash, json_decode(Storage::get('list.json'), true), 15);
         }
 
         if (Cache::has($hash)) {
