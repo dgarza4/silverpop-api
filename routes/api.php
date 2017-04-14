@@ -16,7 +16,7 @@ use App\Services\SilverpopService;
 |
 */
 
-Route::get('/contact/{database_id}/{email}', function (SilverpopService $silverpop, $databaseId, $email) {
+Route::get('/databases/{database_id}/contacts/{email}', function (SilverpopService $silverpop, $databaseId, $email) {
     try {
         $fields = [
             'RETURN_CONTACT_LISTS' => true,
@@ -45,7 +45,7 @@ Route::get('/contact/{database_id}/{email}', function (SilverpopService $silverp
     return $response;
 });
 
-Route::post('/contact', function (SilverpopService $silverpop, Request $request) {
+Route::post('/databases/{database_id}/contact', function (SilverpopService $silverpop, Request $request, $databaseId) {
     $input = $request->all();
 
     if (!is_array($input)) {
@@ -57,7 +57,6 @@ Route::post('/contact', function (SilverpopService $silverpop, Request $request)
     }
 
     $defaultInput = [
-        'listId' => null,
         'fields' => [],
         'upsert' => false,
         'autoreply' => false,
@@ -68,7 +67,7 @@ Route::post('/contact', function (SilverpopService $silverpop, Request $request)
     $input = array_merge($defaultInput, $input);
 
     try {
-        $contact = $silverpop->addRecipient($input['listId'], $input['fields'], $input['upsert'], $input['autoreply'], $input['createdFrom'], $input['contactLists']);
+        $contact = $silverpop->addRecipient($databaseId, $input['fields'], $input['upsert'], $input['autoreply'], $input['createdFrom'], $input['contactLists']);
     } catch (Exception $e) {
         throw $e;
     }
@@ -80,9 +79,9 @@ Route::post('/contact', function (SilverpopService $silverpop, Request $request)
     return $response;
 });
 
-Route::get('/list/{id?}', function (SilverpopService $silverpop, $id = null) {
+Route::get('/databases/{database_id?}', function (SilverpopService $silverpop, $databaseId = null) {
     try {
-        $lists = $silverpop->getLists($id);
+        $lists = $silverpop->getLists($databaseId);
     } catch (Exception $e) {
         throw $e;
     }
@@ -94,9 +93,9 @@ Route::get('/list/{id?}', function (SilverpopService $silverpop, $id = null) {
     return $response;
 });
 
-Route::get('/list/{id}/count', function (SilverpopService $silverpop, $id) {
+Route::get('/databases/{database_id}/count', function (SilverpopService $silverpop, $databaseId) {
     try {
-        $count = $silverpop->getListCount($id);
+        $count = $silverpop->getListCount($databaseId);
     } catch (Exception $e) {
         throw $e;
     }
@@ -110,9 +109,9 @@ Route::get('/list/{id}/count', function (SilverpopService $silverpop, $id) {
     return $response;
 });
 
-Route::get('/list/{id}/export', function (SilverpopService $silverpop, $id) {
+Route::get('/databases/{database_id}/export', function (SilverpopService $silverpop, $databaseId) {
     try {
-        $exportList = $silverpop->exportList($id);
+        $exportList = $silverpop->exportList($databaseId);
     } catch (Exception $e) {
         throw $e;
     };
@@ -126,9 +125,9 @@ Route::get('/list/{id}/export', function (SilverpopService $silverpop, $id) {
     return $response;
 });
 
-Route::get('/job/{id}', function (SilverpopService $silverpop, $id) {
+Route::get('/jobs/{job_id}', function (SilverpopService $silverpop, $jobId) {
     try {
-        $result = $silverpop->getJobStatus($id);
+        $result = $silverpop->getJobStatus($jobId);
     } catch (Exception $e) {
         throw $e;
     };
@@ -142,8 +141,8 @@ Route::get('/job/{id}', function (SilverpopService $silverpop, $id) {
     return $response;
 });
 
-Route::get('/job/{id}/download', function (SilverpopService $silverpop, $id) {
-    $hash = sha1($id);
+Route::get('/jobs/{job_id}/download', function (SilverpopService $silverpop, $jobId) {
+    $hash = sha1($jobId);
 
     if (!Cache::has($hash)) {
         throw new Exception('Job ID not found.');
@@ -157,7 +156,7 @@ Route::get('/job/{id}/download', function (SilverpopService $silverpop, $id) {
     try {
         if (!Storage::exists($hash)) {
             // get job status
-            $jobStatus = $silverpop->getJobStatus($id);
+            $jobStatus = $silverpop->getJobStatus($jobId);
 
             if ($jobStatus !== 'COMPLETE') {
                 throw new Exception('Job status [' . $jobStatus . '] is not complete.');
@@ -201,7 +200,7 @@ Route::get('/job/{id}/download', function (SilverpopService $silverpop, $id) {
     };
 });
 
-Route::post('/template/{id}/schedule', function (SilverpopService $silverpop, Request $request, $id) {
+Route::post('/templates/{template_id}/schedule', function (SilverpopService $silverpop, Request $request, $templateId) {
     $input = $request->all();
 
     if (!is_array($input)) {
@@ -226,7 +225,7 @@ Route::post('/template/{id}/schedule', function (SilverpopService $silverpop, Re
     try {
         // scheduleMailing($templateId, $listId, $mailingName, $scheduledTimestamp, $optionalElements = array(), $saveToSharedFolder = 0, $suppressionLists = array())
         $mailingId = $silverpop->scheduleMailing(
-            $id,
+            $templateId,
             $input['listId'],
             $input['mailingName'],
             $input['scheduledTimestamp'],
