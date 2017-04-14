@@ -16,115 +16,22 @@ use App\Services\SilverpopService;
 |
 */
 
-Route::get('/databases/{database_id}/contacts/{email}', function (SilverpopService $silverpop, $databaseId, $email) {
-    try {
-        $fields = [
-            'RETURN_CONTACT_LISTS' => true,
-            'EMAIL' => $email
-        ];
-        $result = json_decode(json_encode($silverpop->selectRecipientData($databaseId, $fields)), true);
+/**
+ * databases
+ */
+Route::get('/databases/{database_id?}', 'Api\DatabaseController@list');
 
-        if (empty($result['CONTACT_LISTS'])) {
-            $result['CONTACT_LISTS']['CONTACT_LIST_ID'] = [];
-        }
+Route::get('/databases/{database_id}/count', 'Api\DatabaseController@size');
 
-        $contactLists = [];
-        foreach ($result['CONTACT_LISTS']['CONTACT_LIST_ID'] as $contactListId) {
-            $contactLists[$contactListId] = $silverpop->getLists($contactListId);
-        }
-    } catch (Exception $e) {
-        throw $e;
-    };
+Route::get('/databases/{database_id}/export', 'Api\DatabaseController@export');
 
-    $response = [
-        'results' => [
-            'contactLists' => $contactLists
-        ]
-    ];
+Route::get('/databases/{database_id}/contacts/{email}', 'Api\DatabaseController@listContactLists');
 
-    return $response;
-});
+Route::post('/databases/{database_id}/contact', 'Api\DatabaseController@createContact');
 
-Route::post('/databases/{database_id}/contact', function (SilverpopService $silverpop, Request $request, $databaseId) {
-    $input = $request->all();
-
-    if (!is_array($input)) {
-        throw new Exception('Illegal input.');
-    }
-
-    if (empty($input)) {
-        throw new Exception('Missing input.');
-    }
-
-    $defaultInput = [
-        'fields' => [],
-        'upsert' => false,
-        'autoreply' => false,
-        'createdFrom' => SilverpopConnector\SilverpopXmlConnector::CREATED_FROM_MANUAL,
-        'contactLists' => []
-    ];
-
-    $input = array_merge($defaultInput, $input);
-
-    try {
-        $contact = $silverpop->addRecipient($databaseId, $input['fields'], $input['upsert'], $input['autoreply'], $input['createdFrom'], $input['contactLists']);
-    } catch (Exception $e) {
-        throw $e;
-    }
-
-    $response = [
-        'results' => $contact
-    ];
-
-    return $response;
-});
-
-Route::get('/databases/{database_id?}', function (SilverpopService $silverpop, $databaseId = null) {
-    try {
-        $lists = $silverpop->getLists($databaseId);
-    } catch (Exception $e) {
-        throw $e;
-    }
-
-    $response = [
-        'results' => $lists
-    ];
-
-    return $response;
-});
-
-Route::get('/databases/{database_id}/count', function (SilverpopService $silverpop, $databaseId) {
-    try {
-        $count = $silverpop->getListCount($databaseId);
-    } catch (Exception $e) {
-        throw $e;
-    }
-
-    $response = [
-        'results' => [
-            'count' => $count
-        ]
-    ];
-
-    return $response;
-});
-
-Route::get('/databases/{database_id}/export', function (SilverpopService $silverpop, $databaseId) {
-    try {
-        $exportList = $silverpop->exportList($databaseId);
-    } catch (Exception $e) {
-        throw $e;
-    };
-
-    $response = [
-        'results' => [
-            'export' => $exportList
-        ]
-    ];
-
-    return $response;
-});
-
+/**
+ * jobs
+ */
 Route::get('/jobs/{job_id}', function (SilverpopService $silverpop, $jobId) {
     try {
         $result = $silverpop->getJobStatus($jobId);
@@ -200,6 +107,9 @@ Route::get('/jobs/{job_id}/download', function (SilverpopService $silverpop, $jo
     };
 });
 
+/**
+ * templates
+ */
 Route::post('/templates/{template_id}/schedule', function (SilverpopService $silverpop, Request $request, $templateId) {
     $input = $request->all();
 
