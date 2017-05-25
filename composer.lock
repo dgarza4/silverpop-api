@@ -589,12 +589,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ilanco/silverpop-php-connector.git",
-                "reference": "d07cd871ed0ea0a154b0d613c704fea2fb014609"
+                "reference": "4df0e13c914e171d550eb975890b15b0a5563835"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ilanco/silverpop-php-connector/zipball/d07cd871ed0ea0a154b0d613c704fea2fb014609",
-                "reference": "d07cd871ed0ea0a154b0d613c704fea2fb014609",
+                "url": "https://api.github.com/repos/ilanco/silverpop-php-connector/zipball/4df0e13c914e171d550eb975890b15b0a5563835",
+                "reference": "4df0e13c914e171d550eb975890b15b0a5563835",
                 "shasum": ""
             },
             "require": {
@@ -624,7 +624,7 @@
             "support": {
                 "source": "https://github.com/ilanco/silverpop-php-connector/tree/master"
             },
-            "time": "2017-04-13T22:57:42+00:00"
+            "time": "2017-05-25T15:53:06+00:00"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -2059,12 +2059,12 @@
             "version": "0.9.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/padraic/mockery.git",
+                "url": "https://github.com/mockery/mockery.git",
                 "reference": "6fdb61243844dc924071d3404bb23994ea0b6856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/6fdb61243844dc924071d3404bb23994ea0b6856",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/6fdb61243844dc924071d3404bb23994ea0b6856",
                 "reference": "6fdb61243844dc924071d3404bb23994ea0b6856",
                 "shasum": ""
             },
