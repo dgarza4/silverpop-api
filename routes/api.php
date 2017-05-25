@@ -157,3 +157,83 @@ Route::post('/templates/{template_id}/schedule', function (SilverpopService $sil
 
     return $response;
 });
+
+/**
+ * webhook
+ */
+Route::post('/templates/webhook', function (SilverpopService $silverpop, Request $request) {
+    $input = $request->all();
+
+    $to = $request->input('to');
+    $subject = $request->input('subject');
+    $body = [
+        'html' => $request->input('html')
+    ];
+
+    // check if list is valid
+    $list = $silverpop->getLists(strtok($to, '@'));
+
+    $listId = $list['ID'];
+
+    // disable xml errors
+    libxml_use_internal_errors(true);
+
+    $dom = new DOMdocument();
+    $dom->loadHTML(mb_convert_encoding($body['html'], 'HTML-ENTITIES', 'UTF-8'));
+    $xPath = new DOMXPath($dom);
+    $bodyTag = $xPath->query('//body')->item(0);
+    $e = $dom->createElement('a', 'Unsubscribe');
+    $e->setAttribute('href', '#SPONECLICKOPTOUT');
+    $e->setAttribute('xt', 'SPONECLICKOPTOUT');
+    $e->setAttribute('name', 'OOLink');
+    $a = $bodyTag->appendChild($e);
+
+    $body['html'] = $dom->saveHTML();
+
+    // enable xml errors
+    libxml_use_internal_errors(false);
+
+    $clickThroughs = [
+        [
+            'ClickThroughName' => 'OOLink',
+            'ClickThroughURL' => '#SPONECLICKOPTOUT',
+            'ClickThroughType' => 14
+        ]
+    ];
+
+    try {
+        // createTemplate($mailingSubject, $mailingBodies = [], $mailingFromName, $mailingFromEmail, $mailingReplyTo, $listId, $clickThroughs)
+        $template = $silverpop->createTemplate(
+            $subject,
+            $body,
+            'NCSY',
+            'info@ncsy.org',
+            'info@ncsy.org',
+            $listId,
+            $clickThroughs
+        );
+
+        $templateId = $template['MailingID'];
+
+        $mailingId = $silverpop->scheduleMailing(
+            $templateId,
+            $listId,
+            $subject . '-' . time(),
+            time() + 20,
+            [],
+            1,
+            []
+        );
+    } catch (Exception $e) {
+        throw $e;
+    }
+
+    $response = [
+        'results' => [
+            'templateId' => $templateId,
+            'mailingId' => $mailingId[0]
+        ]
+    ];
+
+    return $response;
+});

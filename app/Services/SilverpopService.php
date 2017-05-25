@@ -119,4 +119,23 @@ class SilverpopService
 
         return $contact[0];
     }
+
+    public function createTemplate($mailingSubject, $mailingBodies, $mailingFromName, $mailingFromEmail, $mailingReplyTo, $listId, $clickThroughs = [])
+    {
+        $mailingName = $mailingSubject . '-' . time();
+
+        try {
+            $this->authenticateXml();
+
+            // public function saveMailing($mailingName, $mailingSubject,
+            // $mailingBodies, $mailingFromName, $mailingFromEmail,
+            // $mailingReplyTo, $listId, $templateId = null, $saveToSharedFolder
+            // = 1, $trackingLevel = 4, $clickThroughs = array())
+            $result = json_decode(json_encode($this->silverpop->saveMailing($mailingName, $mailingSubject, $mailingBodies, $mailingFromName, $mailingFromEmail, $mailingReplyTo, $listId, null, 1, 4, $clickThroughs)), true);
+        } catch (Exception $e) {
+            throw $e;
+        };
+
+        return $result;
+    }
 }
