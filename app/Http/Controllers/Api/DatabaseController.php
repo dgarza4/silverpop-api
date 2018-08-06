@@ -151,7 +151,7 @@ class DatabaseController extends Controller
 
         $defaultInput = [
             'fields' => [],
-            'upsert' => false,
+            'upsert' => true,
             'autoreply' => false,
             'createdFrom' => \SilverpopConnector\SilverpopXmlConnector::CREATED_FROM_MANUAL,
             'contactLists' => []

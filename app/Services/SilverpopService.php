@@ -107,7 +107,7 @@ class SilverpopService
         return $exportList;
     }
 
-    public function addRecipient($listId, $fields, $upsert = false, $autoreply = false, $createdFrom = SilverpopConnector\SilverpopXmlConnector::CREATED_FROM_MANUAL, $lists = [])
+    public function addRecipient($listId, $fields, $upsert = true, $autoreply = false, $createdFrom = SilverpopConnector\SilverpopXmlConnector::CREATED_FROM_MANUAL, $lists = [])
     {
         try {
             $this->authenticateXml();
